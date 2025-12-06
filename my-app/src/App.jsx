@@ -5,12 +5,14 @@ import { Container } from "./Components/Container/Container";
 import { TodosList } from "./Components/TodoList/TodoList";
 import { ToDoEditor } from "./Components/TodoList/TodoEditor";
 import { Filter } from "./Components/Filter/Filter";
+import { Modal } from "./Components/Modal/Modal";
 import { nanoid } from "nanoid";
 
 export class App extends Component {
   state = {
     todos: todosData,
     filter: "",
+    showModal: false,
   };
 
   deleteToDO = (todoId) => {
@@ -83,17 +85,21 @@ export class App extends Component {
       localStorage.setItem("todos", JSON.stringify(nextTodos))
     }
   }
-
+  toggleModal = () => {
+    this.setState(({showModal}) => ({
+    showModal: !showModal,
+  }))
+}
   
 
   render() {
-    const { todos, filter } = this.state;
+    const { todos, filter,showModal } = this.state;
     const completedToDoCount = this.calculateCompletedTodos();
     const totalToDoCount = todos.length;
 
     return (
       <Container>
-        <div>
+        {/* <div>
           <p>Total tasks: {totalToDoCount}</p>
           <p>Completed tasks: {completedToDoCount}</p>
         </div>
@@ -104,7 +110,16 @@ export class App extends Component {
           onDeleteToDo={this.deleteToDO}
           onToggleCompleted={this.toggleCompleted}
 
-        />
+        /> */}
+        <button type="button" onClick={this.toggleModal}>Open</button>
+
+        {showModal && (
+          <Modal onClose = {this.toggleModal}>
+            <h2>h1</h2>
+            <p>hi2</p>
+            <button type="button" onClick={this.toggleModal}>Close</button>
+          </Modal>
+      )}
       </Container>
     );
   }
